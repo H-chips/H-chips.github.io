@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>智能快递小车 | 一只小汉堡's Blog</title><meta name="author" content="黄凯旋"><meta name="copyright" content="黄凯旋"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="第一部分：设计概述 1.1 设计目的通过构建智能快递小车原型系统，探索以STM32单片机为行驶主控、以树莓派及其扩展板为辅助的感知、控制和执行完整方案，实现小车在既定道路上自动行驶、摄像头采集与障碍识别、人脸识别与查询取件等功能，为下一步在校园中实际应用奠定基础。在实践过程中，灵活运用各门课程的相关知识，学习和掌握嵌入式软硬件设计的具体方法，加深对控制系统的认识与理解，锤炼复杂工程设计与产品开发全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="智能快递小车">
+<meta property="og:url" content="http://example.com/posts/b3b82b56.html">
+<meta property="og:site_name" content="一只小汉堡&#39;s Blog">
+<meta property="og:description" content="第一部分：设计概述 1.1 设计目的通过构建智能快递小车原型系统，探索以STM32单片机为行驶主控、以树莓派及其扩展板为辅助的感知、控制和执行完整方案，实现小车在既定道路上自动行驶、摄像头采集与障碍识别、人脸识别与查询取件等功能，为下一步在校园中实际应用奠定基础。在实践过程中，灵活运用各门课程的相关知识，学习和掌握嵌入式软硬件设计的具体方法，加深对控制系统的认识与理解，锤炼复杂工程设计与产品开发全">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-25T06:07:56.000Z">
+<meta property="article:modified_time" content="2023-03-25T06:56:59.607Z">
+<meta property="article:author" content="黄凯旋">
+<meta property="article:tag" content="一只小汉堡,嵌入式,计算机,知识点">
+<meta name="twitter:card" content="summary"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/posts/b3b82b56"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '智能快递小车',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-25 14:56:59'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">一只小汉堡's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">智能快递小车</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-03-25T06:07:56.000Z" title="发表于 2023-03-25 14:07:56">2023-03-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-25T06:56:59.607Z" title="更新于 2023-03-25 14:56:59">2023-03-25</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="智能快递小车"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="第一部分：设计概述"><a href="#第一部分：设计概述" class="headerlink" title="第一部分：设计概述"></a>第一部分：设计概述</h1><hr>
+<h2 id="1-1-设计目的"><a href="#1-1-设计目的" class="headerlink" title="1.1 设计目的"></a>1.1 设计目的</h2><p>通过构建智能快递小车原型系统，探索以STM32单片机为行驶主控、以树莓派及其扩展板为辅助的感知、控制和执行完整方案，实现小车在既定道路上自动行驶、摄像头采集与障碍识别、人脸识别与查询取件等功能，为下一步在校园中实际应用奠定基础。在实践过程中，灵活运用各门课程的相关知识，学习和掌握嵌入式软硬件设计的具体方法，加深对控制系统的认识与理解，锤炼复杂工程设计与产品开发全周期、全流程方法、技术和能力。</p>
+<hr>
+<hr>
+<h2 id="1-2-应用领域"><a href="#1-2-应用领域" class="headerlink" title="1.2 应用领域"></a>1.2 应用领域</h2><p>本智能小车系统可以广泛应用于物流、医疗等领域。在医疗领域中，智能小车可以运送医疗器械、标本、医疗废弃品等。智能小车在医疗领域中的应用可以有效解决以下问题：因用于医用物品配送的人力资源过多，导致的人力资源浪费问题；因人为配送不及时，影响诊疗服务质量问题；人为配送出现的送错、损坏、丢失等问题。将本智能小车应用于物流行业，可节约大量的人力资源，从而实现物流领域的降本增效，推动物流产业的转型升级。</p>
+<hr>
+<hr>
+<h2 id="1-3-主要技术特点"><a href="#1-3-主要技术特点" class="headerlink" title="1.3 主要技术特点"></a>1.3 主要技术特点</h2><p>基于STM32MP157DDA1单片机，配合树莓派和其他常用扩展模块电路完成智能小车设计。本作品主要包含以下几个模块：电机驱动模块、循迹模块、机械臂模块、摄像头模块，使用STM32MP157单片机作为主控芯片，实现小车的驱动与循迹；使用树莓派进行图像处理，通过摄像头（平视视觉）识别行人和障碍物等，据此判断小车是否由正常行驶切换到怠速、避障或取件模式，并实现对机械臂的控制：当小车处于取件模式时，机械臂抓取小车上的物件并举起，以便客户取件。主从板之间采用串口通信进行收发指令，树莓派与舵机之间使用I2C串口通信。</p>
+<hr>
+<hr>
+<h2 id="1-4-关键性能指标"><a href="#1-4-关键性能指标" class="headerlink" title="1.4 关键性能指标"></a>1.4 关键性能指标</h2><p> STM32MP157微处理器基于灵活的双Arm Cortex-A7内核（工作频率800 MHz）和Cortex-M4内核（工作频率209 MHz）架构，LFBGA448 封装；核心板板载：1GB DDR3L、8GB EMMC 存储器[1]；可编程串行UART，有多路USB接口，方便与其他板通信；有12个16位可编程定时&#x2F;计数器中断、2个32位定时器和2个16位电机控制定时器；核心板的外部高速晶振(HSE)和外部低速晶振(LSE)分别是：24MHZ和32.768KHZ[2]。</p>
+<hr>
+<hr>
+<h2 id="1-5-主要创新点"><a href="#1-5-主要创新点" class="headerlink" title="1.5 主要创新点"></a>1.5 主要创新点</h2><p>(1)	采用STM32主控+树莓派辅助方案，合理分配各开发板SOC的处理能力与板载端口等资源。其中使用STM32MP157控制小车的行驶与巡线；使用树莓派4B基于OpenCV实现对行人和障碍物的识别；通过串口通信向主控板发出统一指令来改变小车的行驶模式；树莓派使用I2C协议控制机械臂的舵机，发送关节参数及静默时间信号以实现机械臂的伸展以及抓取操作。</p>
+<p>(2)	建立可反映小车运行时多种情况的状态自动机，用以统一协调来自树莓派摄像头的视觉感知和STM32行驶控制信息。其中机器视觉经Haar分类器得到预测结果，通过不同结果实时判断并发送给主控板控制命令；在每个周期内主控板上状态自动机根据命令进行可能的系统状态切换，更新小车行驶状态。</p>
+<p>(3)	小车避障功能的设计与实现。基于对摄像头分别建立的独立采集线程以保证系统实时性，基于状态自动机保证机器视觉与小车本身运行状态的协同，在此基础上设计可对应道路中障碍物的避障模式。避障算法基于多重模板匹配算法，根据摄像头边缘检测结果计算障碍物坐标并引导小车按固定路线（一般是右转-&gt;直行-&gt;左转）避障。</p>
+<hr>
+<h1 id="第二部分-系统组成及功能说明"><a href="#第二部分-系统组成及功能说明" class="headerlink" title="第二部分  系统组成及功能说明"></a>第二部分  系统组成及功能说明</h1><hr>
+<h2 id="2-1整体介绍"><a href="#2-1整体介绍" class="headerlink" title="2.1	整体介绍"></a>2.1	整体介绍</h2><h3 id="2-1-1-系统整体架构"><a href="#2-1-1-系统整体架构" class="headerlink" title="2.1.1 系统整体架构"></a>2.1.1 系统整体架构</h3><p>单片机STM32MP157DDA1作为主控板，负责控制电机驱动及光电传感器以实现智能小车的自主巡线行驶。树莓派4B作为从控板，负责控制机器视觉模块实现对行人和障碍物的识别，并且通过串口通信向主控板发出控制指令，同时驱动机械臂进行取件动作。</p>
+<p><a target="_blank" rel="noopener" href="https://imgloc.com/i/iANiDV"><img src="https://i.328888.xyz/2023/03/25/iANiDV.jpeg" alt="iANiDV.jpeg"></a></p>
+<p>智能小车的总体功能如下：小车能够实现自动依据巡线地图进行行驶；能够依据摄像头识别到的图像自主切换行驶模式，当识别到障碍物时，切换到避障模式，自主躲避障碍物；当识别到行人时，切换到取件模式，小车停止移动，而后控制机械臂拿起物件供客户取件。</p>
+<hr>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">黄凯旋</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/posts/b3b82b56.html">http://example.com/posts/b3b82b56.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">一只小汉堡's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/posts/ff6efeb7.html"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">智能农业大棚</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">黄凯旋</div><div class="author-info__description">这里是一个知识的垃圾堆</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9A%E8%AE%BE%E8%AE%A1%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">第一部分：设计概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E8%AE%BE%E8%AE%A1%E7%9B%AE%E7%9A%84"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 设计目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%BA%94%E7%94%A8%E9%A2%86%E5%9F%9F"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 应用领域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E4%B8%BB%E8%A6%81%E6%8A%80%E6%9C%AF%E7%89%B9%E7%82%B9"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 主要技术特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%E5%85%B3%E9%94%AE%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 关键性能指标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-%E4%B8%BB%E8%A6%81%E5%88%9B%E6%96%B0%E7%82%B9"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 主要创新点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86-%E7%B3%BB%E7%BB%9F%E7%BB%84%E6%88%90%E5%8F%8A%E5%8A%9F%E8%83%BD%E8%AF%B4%E6%98%8E"><span class="toc-number">2.</span> <span class="toc-text">第二部分  系统组成及功能说明</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%E6%95%B4%E4%BD%93%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.1.</span> <span class="toc-text">2.1	整体介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%E7%B3%BB%E7%BB%9F%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="toc-number">2.1.1.</span> <span class="toc-text">2.1.1 系统整体架构</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/b3b82b56.html" title="智能快递小车"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="智能快递小车"/></a><div class="content"><a class="title" href="/posts/b3b82b56.html" title="智能快递小车">智能快递小车</a><time datetime="2023-03-25T06:07:56.000Z" title="发表于 2023-03-25 14:07:56">2023-03-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/ff6efeb7.html" title="智能农业大棚"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="智能农业大棚"/></a><div class="content"><a class="title" href="/posts/ff6efeb7.html" title="智能农业大棚">智能农业大棚</a><time datetime="2023-03-19T02:46:52.000Z" title="发表于 2023-03-19 10:46:52">2023-03-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/d87f7e0c.html" title="test"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="test"/></a><div class="content"><a class="title" href="/posts/d87f7e0c.html" title="test">test</a><time datetime="2023-03-19T02:14:53.000Z" title="发表于 2023-03-19 10:14:53">2023-03-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/4a17b156.html" title="Hello World"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/posts/4a17b156.html" title="Hello World">Hello World</a><time datetime="2022-12-18T11:26:17.254Z" title="发表于 2022-12-18 19:26:17">2022-12-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 黄凯旋</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
